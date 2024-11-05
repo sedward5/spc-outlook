@@ -6,3 +6,7 @@ pkg-resources==0.0.0
 requests==2.31.0
 shapely==2.0.4
 urllib3==2.0.7
+colorlog==6.8.2
+homeassistant==2024.6.0
+pip>=21.3.1
+ruff==0.7.1
