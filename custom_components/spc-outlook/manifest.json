@@ -1,10 +1,13 @@
 {
-  "domain": "spc_outlook",
+  "domain": "spc-outlook",
   "name": "SPC Outlook",
-  "codeowners": [],
+  "codeowners": [
+    "@sedward5"
+  ],
   "dependencies": [],
-  "documentation": "https://github.com/home-assistant/example-custom-config/tree/master/custom_components/example_sensor/",
-  "iot_class": "local_polling",
+  "documentation": "https://github.com/sedward5/spc-outlook",
+  "iot_class": "cloud_polling",
   "requirements": [],
+  "issue_tracker": "https://github.com/sedwars5/spc-outlookp/issues",
   "version": "0.1.0"
 }
