@@ -1,1 +1,1 @@
-""" Nothing yet """
+"""SPC Severe Weather Outlook Componenent."""
