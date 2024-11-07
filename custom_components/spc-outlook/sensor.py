@@ -45,6 +45,7 @@ class ExampleSensor(SensorEntity):
         self._attr_native_value = 23
 
 def getspcoutlook():
+    """Query SPC for latest severe weather outlooks."""
     output = {}
     location = Point(-83, 42) # add your lon lat here
     for day in range(1, 4):
