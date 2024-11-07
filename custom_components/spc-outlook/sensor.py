@@ -46,7 +46,7 @@ def getSpcOutlook():
         print("Day "+str(day)+" outlook:")
         url = "https://www.spc.noaa.gov/products/outlook/day" + str(day) + "otlk_cat.lyr.geojson"
         result = False
-        resp = requests.get(url=url)
+        resp = requests.get(url=url, timeout=10)
         data = resp.json()
         for feature in data["features"]:
             polygon = shape(feature["geometry"])
@@ -55,21 +55,21 @@ def getSpcOutlook():
                 result = True
         if result and day < 3:
             torn_url = "https://www.spc.noaa.gov/products/outlook/day" + str(day)+ "otlk_torn.lyr.geojson"
-            resp = requests.get(url=torn_url)
+            resp = requests.get(url=torn_url, timeout=10)
             data = resp.json()
             for feature in data["features"]:
                 polygon = shape(feature["geometry"])
                 if polygon.contains(location):
                     print("Tornado risk: ", feature["properties"]["LABEL2"])
             hail_url = "https://www.spc.noaa.gov/products/outlook/day"+str(day)+"otlk_hail.lyr.geojson"
-            resp = requests.get(url=hail_url)
+            resp = requests.get(url=hail_url, timeout=10)
             data = resp.json()
             for feature in data["features"]:
                 polygon = shape(feature["geometry"])
                 if polygon.contains(location):
                     print("Hail risk: ", feature["properties"]["LABEL2"])
             wind_url = "https://www.spc.noaa.gov/products/outlook/day"+str(day)+"otlk_wind.lyr.geojson"
-            resp = requests.get(url=wind_url)
+            resp = requests.get(url=wind_url, timeout=10)
             data = resp.json()
             for feature in data["features"]:
                 polygon = shape(feature["geometry"])
