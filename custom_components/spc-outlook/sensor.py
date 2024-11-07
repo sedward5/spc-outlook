@@ -1,8 +1,7 @@
 """Platform for sensor integration."""
-import json
-import requests
 from __future__ import annotations
-from shapely.geometry import shape, Point
+
+import requests
 from homeassistant.components.sensor import (
     SensorDeviceClass,
     SensorEntity,
@@ -12,6 +11,7 @@ from homeassistant.const import UnitOfTemperature
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
+from shapely.geometry import Point, shape
 
 
 def setup_platform(
@@ -33,9 +33,8 @@ class ExampleSensor(SensorEntity):
     _attr_state_class = SensorStateClass.MEASUREMENT
 
     def update(self) -> None:
-        """Fetch new state data for the sensor.
-
-
+        """
+        Fetch new state data for the sensor.
 
         This is the only method that should fetch new data for Home Assistant.
         """
@@ -44,36 +43,35 @@ class ExampleSensor(SensorEntity):
 def getSpcOutlook():
     location = Point(-83, 42) # add your lon lat here
     for day in range(1, 4):
-        print('Day '+str(day)+' outlook:')
-        url = 'https://www.spc.noaa.gov/products/outlook/day' + str(day) + 'otlk_cat.lyr.geojson'
+        print("Day "+str(day)+" outlook:")
+        url = "https://www.spc.noaa.gov/products/outlook/day" + str(day) + "otlk_cat.lyr.geojson"
         result = False
         resp = requests.get(url=url)
         data = resp.json()
-        for feature in data['features']:
-            polygon = shape(feature['geometry'])
+        for feature in data["features"]:
+            polygon = shape(feature["geometry"])
             if polygon.contains(location):
-                print('Day ' + str(day) + ' Categorical Risk: ', feature['properties']['LABEL2'])
+                print("Day " + str(day) + " Categorical Risk: ", feature["properties"]["LABEL2"])
                 result = True
         if result and day < 3:
-            torn_url = 'https://www.spc.noaa.gov/products/outlook/day' + str(day)+ 'otlk_torn.lyr.geojson'
+            torn_url = "https://www.spc.noaa.gov/products/outlook/day" + str(day)+ "otlk_torn.lyr.geojson"
             resp = requests.get(url=torn_url)
             data = resp.json()
-            for feature in data['features']:
-                polygon = shape(feature['geometry'])
+            for feature in data["features"]:
+                polygon = shape(feature["geometry"])
                 if polygon.contains(location):
-                    print('Tornado risk: ', feature['properties']['LABEL2'])
-            hail_url = 'https://www.spc.noaa.gov/products/outlook/day'+str(day)+'otlk_hail.lyr.geojson'
+                    print("Tornado risk: ", feature["properties"]["LABEL2"])
+            hail_url = "https://www.spc.noaa.gov/products/outlook/day"+str(day)+"otlk_hail.lyr.geojson"
             resp = requests.get(url=hail_url)
             data = resp.json()
-            for feature in data['features']:
-                polygon = shape(feature['geometry'])
+            for feature in data["features"]:
+                polygon = shape(feature["geometry"])
                 if polygon.contains(location):
-                    print('Hail risk: ', feature['properties']['LABEL2'])
-            wind_url = 'https://www.spc.noaa.gov/products/outlook/day'+str(day)+'otlk_wind.lyr.geojson'
+                    print("Hail risk: ", feature["properties"]["LABEL2"])
+            wind_url = "https://www.spc.noaa.gov/products/outlook/day"+str(day)+"otlk_wind.lyr.geojson"
             resp = requests.get(url=wind_url)
             data = resp.json()
-            for feature in data['features']:
-                polygon = shape(feature['geometry'])
+            for feature in data["features"]:
+                polygon = shape(feature["geometry"])
                 if polygon.contains(location):
-                    print('Wind risk: ', feature['properties']['LABEL2'])
-    
+                    print("Wind risk: ", feature["properties"]["LABEL2"])
