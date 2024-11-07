@@ -44,7 +44,7 @@ class ExampleSensor(SensorEntity):
         """
         self._attr_native_value = 23
 
-def getspcoutlook():
+def getspcoutlook() -> dict[str, int]:
     """Query SPC for latest severe weather outlooks."""
     output = {}
     location = Point(-83, 42) # add your lon lat here
@@ -67,7 +67,7 @@ def getspcoutlook():
             for feature in data["features"]:
                 polygon = shape(feature["geometry"])
                 if polygon.contains(location):
-                    print("Tornado risk: ", feature["properties"]["LABEL2"])
+                    output["torn_day"+str(day)] = feature["properties"]["LABEL2"]
             hail_url = "https://www.spc.noaa.gov/products/outlook/day"+str(day)+\
                 "otlk_hail.lyr.geojson"
             resp = requests.get(url=hail_url, timeout=10)
@@ -75,7 +75,7 @@ def getspcoutlook():
             for feature in data["features"]:
                 polygon = shape(feature["geometry"])
                 if polygon.contains(location):
-                    print("Hail risk: ", feature["properties"]["LABEL2"])
+                    output["hail_day"+str(day)] = feature["properties"]["LABEL2"]
             wind_url = "https://www.spc.noaa.gov/products/outlook/day"+str(day)+\
                 "otlk_wind.lyr.geojson"
             resp = requests.get(url=wind_url, timeout=10)
@@ -83,4 +83,5 @@ def getspcoutlook():
             for feature in data["features"]:
                 polygon = shape(feature["geometry"])
                 if polygon.contains(location):
-                    print("Wind risk: ", feature["properties"]["LABEL2"])
+                    output["wind_day"+str(day)] = feature["properties"]["LABEL2"]
+    return output
