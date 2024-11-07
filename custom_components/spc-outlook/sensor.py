@@ -40,10 +40,10 @@ class ExampleSensor(SensorEntity):
         """
         self._attr_native_value = 23
 
-def getSpcOutlook():
+def getspcoutlook():
+    output = {}
     location = Point(-83, 42) # add your lon lat here
     for day in range(1, 4):
-        print("Day "+str(day)+" outlook:")
         url = "https://www.spc.noaa.gov/products/outlook/day" + str(day) + "otlk_cat.lyr.geojson"
         result = False
         resp = requests.get(url=url, timeout=10)
@@ -51,7 +51,7 @@ def getSpcOutlook():
         for feature in data["features"]:
             polygon = shape(feature["geometry"])
             if polygon.contains(location):
-                print("Day " + str(day) + " Categorical Risk: ", feature["properties"]["LABEL2"])
+                output['cat_day'+str(day)] = feature["properties"]["LABEL2"]
                 result = True
         if result and day < 3:
             torn_url = "https://www.spc.noaa.gov/products/outlook/day" + str(day)+ "otlk_torn.lyr.geojson"
