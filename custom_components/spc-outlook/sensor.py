@@ -17,6 +17,7 @@ from homeassistant.components.sensor import (
 from homeassistant.const import UnitOfTemperature
 from shapely.geometry import Point, shape
 
+DAYS_WITH_DETAILED_OUTLOOKS = 3
 
 def setup_platform(
     hass: HomeAssistant,
@@ -59,7 +60,7 @@ def getspcoutlook() -> dict[str, int]:
             if polygon.contains(location):
                 output["cat_day"+str(day)] = feature["properties"]["LABEL2"]
                 result = True
-        if result and day < 3:
+        if result and day < DAYS_WITH_DETAILED_OUTLOOKS:
             torn_url = "https://www.spc.noaa.gov/products/outlook/day" + \
                 str(day)+ "otlk_torn.lyr.geojson"
             resp = requests.get(url=torn_url, timeout=10)
